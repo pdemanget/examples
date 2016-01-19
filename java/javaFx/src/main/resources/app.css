@@ -1,0 +1,42 @@
+* {
+	/*Définition des pseudo "variables" de couleur */
+	/*Attention ça ne marche qu'avec les couleurs (pas pour les tailles etc. */
+   -app-primary:   #8080AA;
+}
+.root {
+    -fx-background-image: url("background.jpg");
+   /*-fx-background-color: fx-color-bg;*/
+}
+
+.appWelcome{
+	-fx-font-size: 26.0px;
+}
+.label {
+    -fx-font-size: 18.0px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -app-primary;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+
+}
+
+
+.button {
+    -fx-text-fill: #222222;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+ /*   -fx-background-color: linear-gradient(#61a2b1, #2A5058);*/
+    -fx-background-color: blue;
+    -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
+}
+
+.button {
+    -fx-background-color: #DDFFA4;
+}
+
+.button:hover {
+    -fx-background-color: #9ACD32;
+}
+
+
+
+
