@@ -2,13 +2,11 @@ package fil;
 
 import java.net.URL;
 
-import netscape.javascript.JSObject;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -18,13 +16,23 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import netscape.javascript.JSObject;
 /**
  * http://stackoverflow.com/questions/17522343/custom-javafx-webview-protocol-handler
  * http://stackoverflow.com/questions/16215844/javafx-webview-disable-same-origin-policy-allow-cross-domain-requests
+ * 
+ * http://stackoverflow.com/questions/14385233/setting-a-cookie-using-javafxs-webengine-webview
+ * WebView webView = new WebView();
+URI uri = URI.create("http://mysite.com");
+Map<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
+headers.put("Set-Cookie", Arrays.asList("name=value"));
+java.net.CookieHandler.getDefault().put(uri, headers);
+webView.getEngine().load("http://mysite.com");
+ * 
  * @author pdemanget
  *
  */
-public class Wbe extends Application {
+public class WebkitApplication extends Application {
 
 	private static final String INDEX = "myapp://resource/test.html";
 
