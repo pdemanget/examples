@@ -1,0 +1,50 @@
+"azeaze"
+
+"sdfsdf$(a)sdfsdf".matches("\\$\\(.*\\)");
+java.util.UUID.randomUUID().toString()
+
+java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\$\\(([^)]*)\\)").matcher("sdfsdf$(a)sdf$(b)sdf");
+matcher.find();
+matcher.group(1);
+matcher.find();
+matcher.group(1);
+
+(java.lang.String) a
+
+(java.lang.String) a)sdf$(b
+(java.lang.String) a
+(java.lang.String) $(a)
+(boolean) true
+
+
+(boolean) true
+
+
+(boolean) false
+(boolean) true
+(boolean) false
+
+(boolean) false
+
+int radius =(int) ((int) 5+(Math.log10(500)*20));
+ radius
+ 
+ (int) 58
+ 
+ 
+ (int) 38
+ 
+ (int) 28
+ 
+ (int) 25
+ 
+ (int) 7
+ 
+ (No explicit return value)
+ 
+ 
+The method encode(byte[]) in the type Base64.Encoder is not applicable for the arguments (long)Type mismatch: cannot convert from long to byteType mismatch: cannot convert from int to byteType mismatch: cannot convert from int to byteType mismatch: cannot convert from int to byteType mismatch: cannot convert from int to bytenew String(java.util.Base64.getEncoder().encode(new byte[]{(byte)
+ 	 java.util.UUID.randomUUID().getLeastSignificantBits(),((byte)java.util.UUID.randomUUID().getLeastSignificantBits()>>>8)}));
+ 
+ (java.lang.String) 5a0d0837-2642-4aa2-bdf9-8b36495db132
+ 

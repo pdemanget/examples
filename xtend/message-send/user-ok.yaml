@@ -1,0 +1,13 @@
+$group1:
+	-a
+	-b
+	-c
+user1:
+	-a
+	-b
+	-c
+	-$group1
+RWX:
+	-R
+	-W
+	-X
