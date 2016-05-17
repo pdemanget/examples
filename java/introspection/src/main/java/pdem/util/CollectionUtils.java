@@ -1,6 +1,7 @@
 package pdem.util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -30,13 +31,30 @@ public class CollectionUtils {
    * @param func
    * @return
    */
-  public <K, V> V lazyCreate (K key, Map<K, V> map, Function<K, V> func) {
+  public static <K, V> V lazyCreate (K key, Map<K, V> map, Function<K, V> func) {
     V value = map.get(key);
     if (value == null) {
       value = func.apply(key);
       map.put(key, value);
     }
     return value;
+  }
+
+  public static <T> T pop (List<T> list) {
+    if (!list.isEmpty()) {
+      T rslt = list.get(list.size() - 1);
+      list.remove(list.size() - 1);
+      return rslt;
+    }
+    return null;
+  }
+
+  public static <T> T peek (List<T> list) {
+    if (!list.isEmpty()) {
+      T rslt = list.get(list.size() - 1);
+      return rslt;
+    }
+    return null;
   }
 
 }

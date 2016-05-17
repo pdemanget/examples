@@ -1,3 +1,14 @@
+
+name cannot be resolvedString name="aa.bb.cc";
+name.lastIndexOf('.', name.lastIndexOf('.')-1)
+
+java.util.Currency.getAInstance("USD").
+
+File cannot be resolved to a typenew java.io.File(".").getAbsolutePath()
+
+
+getDisplayName()
+
 "azeaze"
 
 "sdfsdf$(a)sdfsdf".matches("\\$\\(.*\\)");
