@@ -10,16 +10,36 @@
 	</properties>
 
 	<dependencies>
+		<!-- Theme Windows 7 -->
 		<dependency>
-			<groupId>org.atmosphere</groupId>
-			<artifactId>atmosphere-runtime</artifactId>
-			<version>2.4.2</version>
+			<groupId>org.aerofx</groupId>
+			<artifactId>aerofx</artifactId>
+			<version>0.2</version>
+		</dependency>
+
+		<!-- Ajout des possibilités @Inject -->
+		<dependency>
+			<groupId>com.airhacks</groupId>
+			<artifactId>afterburner.fx</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<!-- Support du SVG -->
+		<dependency>
+			<groupId>de.codecentric.centerdevice</groupId>
+			<artifactId>javafxsvg</artifactId>
+			<version>0.1.1</version>
+		</dependency>
+		<!-- Composants graphiques avancés -->
+		<dependency>
+			<groupId>org.controlsfx</groupId>
+			<artifactId>controlsfx</artifactId>
+			<version>8.40.10</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>5.3</version>
+			<groupId>com.github.sommeri</groupId>
+			<artifactId>less4j</artifactId>
+			<version>1.17.2</version>
 		</dependency>
 
 	</dependencies>
