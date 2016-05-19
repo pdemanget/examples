@@ -6,12 +6,13 @@ Ajout par rapport au tuto
 * resourceBundle i18n
 * Composants à base de Composant(Node) + ComposantFXML + ComposantController
 * Utilisation des properties (TODO)
-* 
+* Utilisation des promise Java : **CompletableFuture**
 
 
 
 Utils développés dans ce projet:
 ------------------------------
+* Popin
 * LambdaUtils: Helper sur les lambda et le proerty
 * FXUtils: Helper pour le FXMLLoader, dateCell
 * LessLoader: pour charger Less en javaFX
