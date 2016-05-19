@@ -1,9 +1,12 @@
 package pdem.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 
@@ -55,6 +58,56 @@ public class CollectionUtils {
       return rslt;
     }
     return null;
+  }
+  
+  
+  public static <T,U> List<U> map(List<T> list, Function<T,U> fun){
+    return list.stream().map(fun).collect(Collectors.toList());
+  }
+  
+  public static <T> T find(List<T> list, Predicate<T> fun){
+    return list.stream().filter(fun).findFirst().orElse(null);
+  }
+  
+  /**
+   * Contains giving predicate instead of classic equals method 
+   *
+   * @param list
+   * @param fun
+   * @return
+   */
+  public static <T> boolean containsStream(List<T> list, Predicate<T> fun){
+    return list.stream().anyMatch(fun);
+  }
+  public static <T> boolean contains2(List<T> list, Predicate<T> fun){
+    for(T t:list){
+      if (fun.test(t)){
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public static <T> boolean contains(List<T> list, Predicate<T> fun){
+    return containsStream(list,fun);
+  }
+  // perf problem, see http://stackoverflow.com/questions/22658322/java-8-performance-of-streams-vs-collections
+  public static void main (String[] args) {
+    List<String> list = new ArrayList<>();
+    for(int i=0;i<1000;i++){
+      list.add("test"+i);
+    }
+    //warm up
+    for(int i=0;i<1000;i++){
+      contains(list,s->"test".equals(s));
+    }
+    
+    long start=System.currentTimeMillis();
+    for(int i=0;i<100_000;i++){
+      contains(list,s->"test".equals(s));
+    }
+    long end=System.currentTimeMillis();
+    System.out.printf("Exec: %d ms",end-start);
   }
 
 }

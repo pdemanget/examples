@@ -10,8 +10,10 @@ package pdem.snippets;
 public class Password {
   
   static String chars1="!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
-  static String chars2="!\"$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~£¤¥¦§©°²µÉàçèéêëù";
-  static char[] chars=chars2.toCharArray();
+  static String chars2="!\"$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~£¤§°²µÉàçèéêëù";
+  //combinaison avec des touches accès direct uniquement
+  static String chars3="!\"$&'()*+,-./0123456789:;<=>?_abcdefghijklmnopqrstuvwxyz£§©°²µàçèéù";
+  static char[] chars=chars3.toCharArray();
   
   public static void main (String[] args) {
     showChars();
@@ -36,13 +38,13 @@ public class Password {
   private static void genPass () {
     char[] bytes=new char [10];
     for(int i=0;i<bytes.length;i++){
-      bytes[i]=randLetter();
+      bytes[i]=randLetter(chars.length);
     }
     System.out.println(new String(bytes));
   }
 
-  private static char randLetter () {
-    double l =Math.random()*111;
+  private static char randLetter (int nb) {
+    double l =Math.random()*nb;
     //return (char)(l+30);
     return chars[(int)l];
    
