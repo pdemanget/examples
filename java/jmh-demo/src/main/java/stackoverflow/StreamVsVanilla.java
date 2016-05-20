@@ -7,13 +7,21 @@ import java.util.stream.Collectors;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
+import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OperationsPerInvocation;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Warmup;
 
+//@State(Scope.Thread)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @OperationsPerInvocation(StreamVsVanilla.N)
+@Fork(value=0,warmups=1)
+@Measurement(iterations=2,time=100, timeUnit=TimeUnit.MILLISECONDS)
+//@Measurement(iterations=5)
+@Warmup(iterations=1)
 public class StreamVsVanilla {
     public static final int N = 100;
 
@@ -35,6 +43,7 @@ public class StreamVsVanilla {
         return result;
     }
 
+    @Measurement(iterations=2,time=100, timeUnit=TimeUnit.MILLISECONDS)
     @Benchmark
     public List<Double> stream() {
         return sourceList.stream()
