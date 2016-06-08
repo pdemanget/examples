@@ -1,0 +1,1 @@
+java -jar target/message-send-1.0-SNAPSHOT-dist/message-send-1.0-SNAPSHOT.jar $*

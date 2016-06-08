@@ -29,4 +29,13 @@ public class FileUtils {
     }
 
   }
+  
+  public static String normalize(String file){
+    return Paths.get(file).normalize().toString();
+  }
+  
+  //lazy test -- its bad -- don't care
+  public static void main (String[] args) {
+    System.out.println(normalize("toto/../titi/tata/"));
+  }
 }
