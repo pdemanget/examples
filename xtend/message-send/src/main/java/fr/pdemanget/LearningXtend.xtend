@@ -20,7 +20,7 @@ import java.util.HashMap
  * @author pdemanget
  * @version 8 juin 2016
  */
-class MainUtils {
+class LearningXtend {
 	/**
      * parse arguments nix-style.
      */

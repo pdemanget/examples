@@ -9,9 +9,13 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.Properties
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import fr.pdemanget.javalang.MainUtils
+import java.util.Map
 
 /**
  * Small CLI application to send and receive from/to RabbitMQ bus.
+ * example
+ * msend --recv -file d:\opt\workspace\LineavisionInterfaces\src\test\resources\recettage\document.json
  * 
  */
 @FinalFieldsConstructor
@@ -22,22 +26,21 @@ class MessageSend {
 	String exchange
 
 	final String file
+	
+	static Map<String, String> params
 
 	def static void main(String[] args) {
-		val params = MainUtils.parseArgs(args)
+		params = MainUtils.mainHelper(args,"msend","$ msend [-file <file>] [--recv]","")
 
-		if (params.size < 2) {
-			println("
-Usage:
-$ msend -file <file> --recv");
-			System.exit(1);
-		}
 		if (params.get("file") != null) {
 			val String file = params.get("file");
 			new MessageSend(file).run();
 		}
 		if (params.get("recv") != null) {
 			new MessageSend("").startRecv();
+		}
+		if (params != null && params.get("file") == null && params.get("recv") == null){
+			MainUtils.showUsage("msend","$ msend [-file <file>] [--recv]","")
 		}
 	}
 
@@ -62,16 +65,15 @@ $ msend -file <file> --recv");
 	}
 
 	def connect() {
-		val properties = new Properties()
-		properties.load(class.getResourceAsStream("/conf.properties"));
+		val properties = params
 
 		val factory = new ConnectionFactory()
-		factory.username = properties.getProperty("user");
-		factory.password = properties.getProperty("password");
-		factory.host = properties.getProperty("host")
-		factory.virtualHost = properties.getProperty("virtualHost")
-		exchange = properties.getProperty("exchange")
-		queue = properties.getProperty("queue");
+		factory.username = properties.get("user");
+		factory.password = properties.get("password");
+		factory.host = properties.get("host")
+		factory.virtualHost = properties.get("virtualHost")
+		exchange = properties.get("exchange")
+		queue = properties.get("queue");
 
 		val connection = factory.newConnection()
 		channel = connection.createChannel()
@@ -91,6 +93,7 @@ $ msend -file <file> --recv");
 	}
 
 	def recv(String queue) {
+		println('''listening on queue "«queue»"''')
 		channel.queueBind(queue,exchange,queue);
 		val consumer = new DefaultConsumer(channel) {
 			override handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,

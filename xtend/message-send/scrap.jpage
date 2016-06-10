@@ -1,4 +1,8 @@
+new javafx.beans.property.SimpleDoubleProperty().get()An exception occurred during evaluation:  java.lang.NoClassDefFoundErrorAn exception occurred during evaluation:  java.lang.NoClassDefFoundErrorAn exception occurred during evaluation:  java.lang.NoClassDefFoundErrorAn exception occurred during evaluation:  java.lang.NoClassDefFoundErrorAn exception occurred during evaluation:  java.lang.NoClassDefFoundError
 
+
+"a".compareTo("b")
+(int) -1
 name cannot be resolvedString name="aa.bb.cc";
 name.lastIndexOf('.', name.lastIndexOf('.')-1)
 
@@ -13,6 +17,8 @@ getDisplayName()
 
 "sdfsdf$(a)sdfsdf".matches("\\$\\(.*\\)");
 java.util.UUID.randomUUID().toString()
+(java.lang.String) 11eb6cfd-58ed-4764-a998-160babe24c95(java.lang.String) 
+2a39c8a7-f80b-46e0-91b6-6358009e4e66
 
 java.util.regex.Matcher matcher = java.util.regex.Pattern.compile("\\$\\(([^)]*)\\)").matcher("sdfsdf$(a)sdf$(b)sdf");
 matcher.find();
