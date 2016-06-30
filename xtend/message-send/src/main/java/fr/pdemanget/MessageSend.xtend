@@ -5,12 +5,11 @@ import com.rabbitmq.client.Channel
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
+import fr.pdemanget.javalang.MainUtils
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.Properties
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import fr.pdemanget.javalang.MainUtils
 import java.util.Map
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 /**
  * Small CLI application to send and receive from/to RabbitMQ bus.
@@ -30,7 +29,8 @@ class MessageSend {
 	static Map<String, String> params
 
 	def static void main(String[] args) {
-		params = MainUtils.mainHelper(args,"msend","$ msend [-file <file>] [--recv]","")
+		val usage = "$ msend [-file <file> [-n repetitions]] [--recv]"
+		params = MainUtils.mainHelper(args,"msend",usage,"")
 
 		if (params.get("file") != null) {
 			val String file = params.get("file");
@@ -40,7 +40,7 @@ class MessageSend {
 			new MessageSend("").startRecv();
 		}
 		if (params != null && params.get("file") == null && params.get("recv") == null){
-			MainUtils.showUsage("msend","$ msend [-file <file>] [--recv]","")
+			MainUtils.showUsage("msend",usage,"")
 		}
 	}
 
@@ -49,7 +49,13 @@ class MessageSend {
 
 		val path = Paths.get(file)
 		println("Reading file "+path.toAbsolutePath.normalize)
-		send(queue, Files.readAllBytes(path))
+		var n=1;
+		if(params.get("n")!= null){
+			n= Integer.parseInt( params.get("n") )
+		}
+		for (i:0 ..<n){
+			send(queue, Files.readAllBytes(path))
+		}
 		// recv(queue)
 		close()
 	}
