@@ -7,8 +7,7 @@ import java.util.List;
 
 /**
  * Permet de prendre la main avant après l'execution (Décorateur).
- * <br><b>© Copyright 2016 - IN-CORE Systèmes - Tous droits réservés</b>
- * 
+ *
  * @author pdemanget
  * @version 28 avr. 2016
  */
@@ -25,12 +24,28 @@ public class DelegateInvocationHandler implements InvocationHandler {
     if("getListeners".equals(method.getName())){
       return method.invoke(this,args );
     }
-    listeners.stream().forEach(l->l.beforeInvoke(proxy, method, args));
-    Object result = delegate.invoke(proxy, method, args);
-    listeners.stream().forEach(l->l.afterInvoke(proxy, method, args, result));
+    Object result;
+    try {
+      result = delegate.invoke(proxy, method, args);
+    } catch (Exception e) {
+
+      for(InvocationListener l:listeners){
+        l.afterInvoke(proxy, method, args, null, e);
+      }
+      throw e;
+    }
+
+    for(InvocationListener l:listeners){
+      try {
+        l.afterInvoke(proxy, method, args, result, null);
+      } catch (Exception e) {
+        throw e;
+      }
+    }
+
     return result;
   }
-  
+
   /**
    * expose liste instead of add/remove
    *
@@ -39,5 +54,5 @@ public class DelegateInvocationHandler implements InvocationHandler {
   public List<InvocationListener> getListeners(){
     return listeners;
   }
-  
+
 }

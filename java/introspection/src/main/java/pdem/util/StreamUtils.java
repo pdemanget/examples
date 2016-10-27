@@ -7,9 +7,8 @@ import java.io.InputStreamReader;
 import java.util.zip.ZipInputStream;
 
 /**
- * 
- * <br><b>© Copyright 2016 - IN-CORE Systèmes - Tous droits réservés</b>
- * 
+ *
+ *
  * @author pdemanget
  * @version 1 avr. 2016
  */

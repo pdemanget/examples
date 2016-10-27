@@ -9,9 +9,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * 
- * <br><b>© Copyright 2016 - IN-CORE Systèmes - Tous droits réservés</b>
- * 
+ *
+ *
  * @author pdemanget
  * @version 31 mars 2016
  */
@@ -27,7 +26,7 @@ public class CollectionUtils {
   }
 
   /**
-   * Manage lazy insert in Map. 
+   * Manage lazy insert in Map.
    *
    * @param key
    * @param map
@@ -59,18 +58,18 @@ public class CollectionUtils {
     }
     return null;
   }
-  
-  
+
+
   public static <T,U> List<U> map(List<T> list, Function<T,U> fun){
     return list.stream().map(fun).collect(Collectors.toList());
   }
-  
+
   public static <T> T find(List<T> list, Predicate<T> fun){
     return list.stream().filter(fun).findFirst().orElse(null);
   }
-  
+
   /**
-   * Contains giving predicate instead of classic equals method 
+   * Contains giving predicate instead of classic equals method
    *
    * @param list
    * @param fun
@@ -87,7 +86,7 @@ public class CollectionUtils {
     }
     return false;
   }
-  
+
   public static <T> boolean contains(List<T> list, Predicate<T> fun){
     return containsStream(list,fun);
   }
@@ -101,7 +100,7 @@ public class CollectionUtils {
     for(int i=0;i<1000;i++){
       contains(list,s->"test".equals(s));
     }
-    
+
     long start=System.currentTimeMillis();
     for(int i=0;i<100_000;i++){
       contains(list,s->"test".equals(s));

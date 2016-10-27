@@ -63,5 +63,5 @@ int radius =(int) ((int) 5+(Math.log10(500)*20));
 The method encode(byte[]) in the type Base64.Encoder is not applicable for the arguments (long)Type mismatch: cannot convert from long to byteType mismatch: cannot convert from int to byteType mismatch: cannot convert from int to byteType mismatch: cannot convert from int to byteType mismatch: cannot convert from int to bytenew String(java.util.Base64.getEncoder().encode(new byte[]{(byte)
  	 java.util.UUID.randomUUID().getLeastSignificantBits(),((byte)java.util.UUID.randomUUID().getLeastSignificantBits()>>>8)}));
  
- (java.lang.String) 5a0d0837-2642-4aa2-bdf9-8b36495db132
+ (java.lang.String) 5a0d0837-2642-4aa2-bdf9-8b36495db132  new javafx.beans.property.SimpleStringProperty().get()An exception occurred during evaluation:  java.lang.NoClassDefFoundError
  

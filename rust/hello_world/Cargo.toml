@@ -1,0 +1,6 @@
+[package]
+name = "hello_world"
+version = "0.1.0"
+authors = ["Philippe DEMANGET <philippe.demanget@incore-systemes.com>"]
+
+[dependencies]

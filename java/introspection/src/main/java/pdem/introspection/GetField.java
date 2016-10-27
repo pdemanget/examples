@@ -82,7 +82,7 @@ public class GetField {
     });
     fields = toList (fields);
 
-    fields = fields.stream ().filter (new Predicate () {
+    fields = (List<Field>)fields.stream ().filter (new Predicate () {
 
       public boolean test (final Object input) {
         final Field field = (Field) input;

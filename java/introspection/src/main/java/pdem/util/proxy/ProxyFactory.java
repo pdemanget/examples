@@ -4,14 +4,13 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 
 /**
- * 
- * <br><b>© Copyright 2016 - IN-CORE Systèmes - Tous droits réservés</b>
- * 
+ *
+ *
  * @author pdemanget
  * @version 28 avr. 2016
  */
 public class ProxyFactory {
-  
+
   @SuppressWarnings ("unchecked")
   public static <I,T > I getProxy(T target, Class<I> interfaz, InvocationListener... listeners ){
     DelegateInvocationHandler dih = new DelegateInvocationHandler( new PassthroughInvocationHandler(target));

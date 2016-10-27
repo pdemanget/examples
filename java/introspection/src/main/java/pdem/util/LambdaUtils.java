@@ -1,6 +1,7 @@
 package pdem.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,20 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TreeItem;
 import javafx.util.StringConverter;
 
+
+/**
+ * Fonction de bind de properties:
+ *
+ * RAF:
+ * recurseUpdates: besoin de binder les listener sur les propriété de propriété (items-colonnes, treeItem-value.) Pour avoir:
+ *  - le model en cours sur un tableTreeView (sur un tableView pas besoin de recurse)
+ *  - Ca colonne modifiée sur un TableView: binder items et la property du model+ débinder en cas de suppression.
+ *      (compteur de statut de ligne: dépend nombre de ligne + valeurs)
+ *
+ */
 public class LambdaUtils {
 
-  
+
   /**
    * grouper sur 1 niveau
    */
@@ -43,7 +55,7 @@ public class LambdaUtils {
   }
 
   /**
-   * Converti un arbre de map en un arbre treeitem javaFX. 
+   * Converti un arbre de map en un arbre treeitem javaFX.
    *
    * @param groupByFields Map from a groupBy
    * @return Treeitem tree
@@ -75,7 +87,7 @@ public class LambdaUtils {
   }
 
   /**
-   * Fonction identique x->x avec casting. 
+   * Fonction identique x->x avec casting.
    *
    * @return
    */
@@ -118,7 +130,7 @@ public class LambdaUtils {
     templateLabel2.setCellValueFactory(cellData -> getter.apply(cellData.getValue()));
   }
 
-  
+
   /**
    * Bind les getter setter d'un bean classique wrappé dans une property à une property.
    *
@@ -144,9 +156,9 @@ public class LambdaUtils {
       setter.accept(objProp.get(), value);
     });
   }
-  
+
   /**
-   * rebind la property du bean à chaque changement de bean 
+   * rebind la property du bean à chaque changement de bean
    *
    * @param objProp
    * @param getter
@@ -162,7 +174,7 @@ public class LambdaUtils {
       }
     });
   }
-  
+
   /**
    * Bind les getter setter d'un bean classique wrappé dans une property contenant des TreeItem.
    * permet de binder des type hétérogènes.
@@ -205,7 +217,7 @@ public class LambdaUtils {
   }
 
 
-  
+
   public static <B, T> void bindBeanGetter (ObjectProperty<B> objProp, Function<B, T> getter, Property<T> textProperty) {
     objProp.addListener( (obs, old, value) -> {
       if (value == null) {
@@ -216,7 +228,7 @@ public class LambdaUtils {
       }
     });
   }
-  
+
   public static <B, T> void bindBeanGetter (ObjectProperty<B> objProp, Function<B, T> getter, Property<String> textProperty, StringConverter<T> converter) {
     objProp.addListener( (obs, old, value) -> {
       if (value == null) {
@@ -227,17 +239,17 @@ public class LambdaUtils {
       }
     });
   }
-  
+
   public static <T,R> void bindProperties( ObjectProperty<T> src , ObjectProperty<R> dest, Function<T,R> converter){
     src.addListener((obs, old, value)->{
       dest.set(converter.apply(value));
     });
   }
-  
-  
+
+
   /**
    * Bind 2 properties ensemble avec un converter de type générique.
-   *  
+   *
    * @param src
    * @param dest
    * @param converter
@@ -246,14 +258,14 @@ public class LambdaUtils {
     src.addListener((obs, old, value)->{
       dest.setValue(converter.to(value));
     });
-    
+
     dest.addListener((obs, old, value)->{
       src.setValue(converter.from(value));
     });
   }
-  
+
   /**
-   * Wrappe un property dans un auter property bindée. 
+   * Wrappe un property dans un auter property bindée.
    *
    */
   public static <T,R> Property<R> wrapProperty(Property<T> src , Converter<T,R> converter){
@@ -261,17 +273,24 @@ public class LambdaUtils {
     bindPropertiesBiDir(src,dest,converter);
     return dest;
   }
-  
+
   public static <T> Function<T,T> trapException(Function<T,T> fun){
     return (T t)->{
       try {
         return fun.apply(t);
       } catch (Exception e) {
-        
+
         e.printStackTrace();
         return t;
       }
     };
   }
+
+  public static <T> Map<String,Long> countGroupBy(Collection<T> list, Function<T,String> groupBy){
+      Map<String, Long> counted = list.stream()
+            .collect(Collectors.groupingBy(groupBy, Collectors.counting()));
+      return counted;
+  }
+
 
 }
