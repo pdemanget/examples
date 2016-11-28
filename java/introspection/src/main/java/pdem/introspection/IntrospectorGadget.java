@@ -3,6 +3,7 @@ package pdem.introspection;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,12 +100,22 @@ public class IntrospectorGadget {
   public static List<Field> getInheritedFields(@SuppressWarnings ("rawtypes") Class clazz){
     List<Field> result = new ArrayList<Field>();
 
-    while (clazz != null){
+    while (clazz != null && clazz != clazz.getSuperclass()){
       //TODO whould we remove super private or overriden fields?
       result.addAll(Arrays.asList(clazz.getDeclaredFields()));
       clazz=clazz.getSuperclass();
     }
     return result;
+  }
+
+  public static Class getGenericParameter(Field field, int i){
+    ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+    return getGenericParameterType(parameterizedType,i);
+  }
+
+  public static Class getGenericParameterType( ParameterizedType parameterizedType,int i) {
+    Class<?> parameter = (Class<?>) parameterizedType.getActualTypeArguments()[i];
+    return parameter;
   }
 
 
