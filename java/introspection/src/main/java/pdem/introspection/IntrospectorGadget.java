@@ -96,5 +96,16 @@ public class IntrospectorGadget {
     return null;
   }
 
+  public static List<Field> getInheritedFields(@SuppressWarnings ("rawtypes") Class clazz){
+    List<Field> result = new ArrayList<Field>();
+
+    while (clazz != null){
+      //TODO whould we remove super private or overriden fields?
+      result.addAll(Arrays.asList(clazz.getDeclaredFields()));
+      clazz=clazz.getSuperclass();
+    }
+    return result;
+  }
+
 
 }

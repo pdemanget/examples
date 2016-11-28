@@ -15,7 +15,7 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
  * Small CLI application to send and receive from/to RabbitMQ bus.
  * example
  * msend --recv -file d:\opt\workspace\LineavisionInterfaces\src\test\resources\recettage\document.json
- * 
+ *
  */
 @FinalFieldsConstructor
 class MessageSend {
@@ -25,7 +25,7 @@ class MessageSend {
 	String exchange
 
 	final String file
-	
+
 	static Map<String, String> params
 
 	def static void main(String[] args) {
@@ -58,6 +58,10 @@ class MessageSend {
 		}
 		// recv(queue)
 		close()
+	}
+
+	def get(String string) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	def send(String queue, byte[] message) {

@@ -169,6 +169,12 @@ ResourceBundle
 
         <Image url="@my_image.png"/>
 
+exemple ToggleButton + constan enum
+--
+				<userData><MabegActionType fx:constant="CREATE_REAM"/></userData>
+
+
+
 Exemple variable + expressions
 ------------------------------
 	<fx:define>
@@ -335,6 +341,8 @@ Les annotations
 @DefaultProperty
 
 
+Note: ne pas utiliser @NamedArg ("innerWidth") .. dans les constructeurs de composants, mais préférer des property de type FX, on peut les lier dans le template avec "${controller.leftCount}" (bien mettre les accolades)
+
 +/- (objectifs?)
 =====
 Les plus
@@ -432,11 +440,16 @@ Des bugs constatés
    la fenêtre dépasse: https://javafx-jira.kenai.com/browse/RT-40302
  - Bug suppression TreeTableView https://bugs.openjdk.java.net/browse/JDK-8090177
  - javaFX FXMLLoader sur des projets différents: les chemins relatifs ne fonctionnent pas.
- - Sur un popin_popover, si on eleve 2 fois le même node des children, ça ^plante, le contains n'est pas à jour non plus, obligé de wrapper pour voir s'il est déjà enlevé.
+ - Sur un popin_popover, si on eleve 2 fois le même node des children, ça plante, le contains n'est pas à jour non plus, obligé de wrapper pour voir s'il est déjà enlevé.
+ - javaFX FXMLLoader la spécialisation de la factory des composants nécessite des builders, alors que leur usage est déprécié.cf http://javafx-jira.kenai.com/browse/RT-28553
 
-Des non-bug mais API inconsistante-insuffisante
+Des non-bug mais API inconsistante-insuffisante et WTF
  - comboBox.setEditable(false) ne sert pas à rendre comboBox non editabel (contrairement à TextField.setEditable): devrais s'appeler allowUnlistedValue
  _ controlsfx.validation est très inssuffisantes: ne gère pas les tableview editable, ne gère pas les flag dirty
+ - Impossibilité de gérer facilement les builder de FXMLLoader http://stackoverflow.com/questions/15005170/how-to-generate-a-builder-class
+ - toujours sur les builder https://community.oracle.com/thread/2544323
+  de l'avoeu meme d'oracle, c'est une erreur: " We made a mistake . . . our implementation has some intractable problems with respect to binary compatibility"
+ - wasUpdated : jamais déclenché, et la doc précise que ça peut ne pas marcher (WTF) voir SimpleUpdateChange. ListChangeBuilder.SubChange
 
 
 
@@ -460,6 +473,35 @@ http://mail.openjdk.java.net/mailman/listinfo/openjfx-dev
  => openjfx-dev@openjdk.java.net
 (par kleopatra/stackoverflow)
 
+
+liste brute des références
+----
+http://javafx-jira.kenai.com/browse/RT-28553
+http://stackoverflow.com/questions/26909488/javafx-binding-combobox-itemsproperty
+http://stackoverflow.com/questions/36917220/javafx-treetableview-leaves-icons-behind-when-collapsing
+https://bugs.openjdk.java.net/browse/JDK-8090177
+https://bugs.openjdk.java.net/browse/JDK-8109406
+https://bugs.openjdk.java.net/browse/JDK-8120279
+https://bugs.openjdk.java.net/browse/JDK-8134923
+https://bugs.openjdk.java.net/browse/JDK-8156049
+https://community.oracle.com/thread/2544323
+https://javafx-jira.kenai.com/browse/RT-40302
+
+
+code WTF
+-----
+
+le code généré dans les builder
+ @SuppressWarnings("unchecked")
+    public B styleClass(java.util.Collection<? extends java.lang.String> x) {
+        this.styleClass = x;
+        __set(63);
+        return (B) this;
+    }
+
+L'appel reflexif des builder
+FXMLLoader:749
+BeanAdapter:333 lookup getter du builder ! (qui n'est donc jamais appelé)
 
 Links
 =====
@@ -826,3 +868,124 @@ FXMLLoader:748
 Cette ligne demande d'avoir un builder séparé pour les attributs.
             if (value instanceof Builder<?>) {
                 processInstancePropertyAttributes();
+
+
+Memory leaks
+====
+https://community.oracle.com/thread/2396063
+
+
+FXMLLoader
+==========
+
+Include
+-------
+Traité dans la classe FXMLLoader.IncludeElement
+note ne semble pas avoir d'implem de loadListener
+La méthode _constructValue_ fait le loading du FXML inclus
+
+    FXMLLoader fxmlLoader = new FXMLLoader(location, resources,
+                builderFactory, controllerFactory, charset,
+                loaders);
+            fxmlLoader.parentLoader = FXMLLoader.this;
+
+suivi de l'injection du controller et de ses champs
+
+      if (fx_id != null) {
+                String id = this.fx_id + CONTROLLER_SUFFIX;
+                Object controller = fxmlLoader.getController();
+
+                namespace.put(id, controller);
+                injectFields(id, controller);
+            }
+
+
+
+
+Expression
+------
+ExpressionValue
+l'objet (non type) namespace contient en fait la map (exemple)
+{controller=fr.incore_systemes.si.mts.monitor.view.MonitorController@9b740c, statusController=fr.incore_systemes.si.mts.monitor.view.status.StatusController@78735ce2, root=BorderPane[id=root], resources=java.util.PropertyResourceBundle@5d93aff0, location=file:/D:/opt/workspace/mts-monitor/target/classes/fr/incore_systemes/si/mts/monitor/view/monitor.fxml, tabPane=TabPane[id=tabPane, styleClass=tab-pane], status=AnchorPane[id=root]}
+
+On note en dur le controller,location, resources, puis les variables injectées du controller (sous controller et composants injectable par @FXML)
+controller
+<sub>Controller
+root (id)
+location
+resources
+
+getNamespace() pour ajouter des variables au namespace !!!
+
+
+
+
+		<fx:define>
+			<Measurement fx:id="m" />
+		</fx:define>
+
+Comment tracer 2 include d'un même fichier:
+ExpressionValue.monitorArguments?
+Autre solution
+getNamespace() est observable, on peut checker l'ajout et setter l'id APRES l'injection des namespace dans le controller.
+
+
+     /**
+     usage <fx:include source="sdfsdf.fxml" PARAMS.prop="${controller.aStringValue}"
+     */
+    public class Params {
+	  public static void setString(Node node, String params) {
+	    node.getProperties().put("PARAMS",params);
+	    }
+	  public static void setProp(Node node, StringProperty params) {
+	    node.getProperties().put("PARAMS_PROP",params);
+	  }
+
+
+
+Top des fonctionnalités oubliées de javaFX
+======
+
+fonctions
+----
+ - Utiliser un moteur d'injection: afterburnerFX ou Spring pour injecter des services dans les controller
+ - Utiliser controlsFX pour ajouter des composants
+ - utiliser les nestedController pour le passage de paramètres (éviter les Property globales).
+ - utiliser le bind de Property.
+ - Utiliser getNamespace() pour ajouter des variables au contexte
+ - Binder simple-direction depuis le template (le double-bind a été désactivé, mais pourquoi?)
+ - Utiliser des tailles en em dans le CSS, avec variable dans le FXML pour gérer les tailles d'écran (utiliser les expressions)
+ - Bien maitriser la différence $expression et ${bindeableExpression} dans les expressions
+ - NE PAS utiliser @NamedArgs dans les constructeurs de composants
+ - bien générer les triples accesseurs aux properties avec le plugin fx (générer getXx setXx et xxProperty ): ils sont utilisés massivement pour l'introspection.
+ - utiliser le ControllerFactory de FXMLLoader :notamment pour le moteur d'injection
+ - utiliser avec circonspection (voire pas du tout) le BuilderFactory de FXMLLoader : utilise des Classes Builder dépréciées (mais utilisées )
+ - Les méthodes statiques peuvent être appellées depuis le FXML et on peut utiliser les properties générales sur toutes les Node
+
+
+
+
+Best pratice
+---
+- ne pas mixer FXML/ objet, un fois qu'on a choisi FXML s'y tenir
+- Instancier le FXMLLoader et ne pas utiliser les méthodes static
+- Toujours setter le bundle de traduction du FXMLLoader (ne pas utiliser resources dans include)
+- Nommer fichier FXML et Css avec un majuscule, du même nom que l'écran, et dans le même package (nom+Controller pour le controller).
+- Désenregistrer ses listeners, ou utiliser de weaklisteners pour éviter les fuite mémoire
+- générer getter setter et properties en cas de doute, car le FXMLLoader les utilise tous, même quand on ne veut utiliser que le getter.
+
+
+
+
+
+Top questions
+--
+ - Passage de paramètres http://stackoverflow.com/questions/14187963/passing-parameters-javafx-fxml
+
+TODO component
+===
+Easy validation
+
+DrugPane (i like the name, what to do with it? - a GridPane more easy to use - only CSS no Constraints, rowConstraints and column constraints, with VBox/HBox positionning options, also tilePane options)
+
+Image from low level C component.

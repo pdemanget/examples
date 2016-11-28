@@ -1,5 +1,16 @@
 STYLE
 =====
+DPI Scaling
+----
+par défaut 1em=12px, mais c'est scallé en fonction de l'écran
+et on peut le forcer avec -Dcom.sun.javafx.fontSize=16 et  -Dcom.sun.javafx.screenDPI=300
+
+	https://bugs.openjdk.java.net/browse/JDK-8124264
+
+http://stackoverflow.com/questions/39024440/how-to-lookup-the-applied-font-on-javafx-label
+
+
+
 taille
 --
 shorthand notation for -fx-region-border at this time.
