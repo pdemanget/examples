@@ -3,7 +3,10 @@ package pdem.util;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -13,6 +16,22 @@ import java.util.zip.ZipInputStream;
  * @version 1 avr. 2016
  */
 public class StreamUtils {
+
+
+  public static String streamToString(InputStream inputStream,Charset encoding) throws IOException {
+    final int bufferSize = 1024;
+    final char[] buffer = new char [bufferSize];
+    final StringBuilder out = new StringBuilder();
+
+    Reader in = new InputStreamReader(inputStream, encoding);
+    for (;;) {
+      int rsz = in.read(buffer, 0, buffer.length);
+      if (rsz < 0)
+        break;
+      out.append(buffer, 0, rsz);
+    }
+    return out.toString();
+  }
 
   public String readFile (String pMsg) {
 

@@ -58,7 +58,6 @@ fx:id= -> pointe sur la variable @FXML du controller
        Parent root = FXMLLoader.load(getClass().getResource("fxml_example.fxml"));
 
         Scene scene = new Scene(root, 300, 275);
-
         stage.setTitle("FXML Welcome");
         stage.setScene(scene);
         stage.show();
@@ -83,6 +82,7 @@ on utilise %code.aaa dans les libellés
 Architecture du projet
 
 Faire son composant.
+------
 
 Personnaliser l'affichage des listes
 CellValueFactory (formattage de texte) et CellFactory
@@ -119,6 +119,22 @@ Avancé
 ------
 utilisation de xtend
 http://blog.efftinge.de/2012/11/active-annotations-explained-javafx.html
+
+Astuces
+-----
+
+
+Autres tuto, liens
+---
+http://code.makery.ch/library/javafx-8-tutorial/
+https://www.reddit.com/r/java/comments/5hcunn/is_javafx_not_really_dead/
+
+
+https://www.reddit.com/r/learnprogramming/comments/4n7pnh/java_my_roommate_and_i_just_finished_our_first/
+https://github.com/Mpmart08/MusicPlayer
+
+
+### gérer les maj listview
 
 
 Inclusions
@@ -212,6 +228,14 @@ AnchorPane
 TIPS
 ====
 prefWidth="${35*u.em}" prefHeight="${25*u.em}"
+
+Updates on ObservableList
+------
+no problem for add & remove, but to track update on an object:
+1. tell the list the object as changed
+toto.setAnyValue("something")
+list.set(list.indexOf(toto),toto);
+2. in the listener trap the "wasReplaced" event
 
 
 
@@ -450,6 +474,10 @@ Des non-bug mais API inconsistante-insuffisante et WTF
  - toujours sur les builder https://community.oracle.com/thread/2544323
   de l'avoeu meme d'oracle, c'est une erreur: " We made a mistake . . . our implementation has some intractable problems with respect to binary compatibility"
  - wasUpdated : jamais déclenché, et la doc précise que ça peut ne pas marcher (WTF) voir SimpleUpdateChange. ListChangeBuilder.SubChange
+ - ImageView antialiasing pas désactivable : http://stackoverflow.com/questions/16089304/javafx-imageview-without-any-smoothing
+ - support supprimé de ARM :http://mail.openjdk.java.net/pipermail/openjfx-dev/2015-January/016570.html
+ - support supprimé de openJDK sous fedora
+
 
 
 
@@ -460,7 +488,10 @@ Des bugs à résoudre en Java9...
 
  Des NPE en rafales
  https://bugs.openjdk.java.net/browse/JDK-8109406
-https://bugs.openjdk.java.net/browse/JDK-8120279
+ https://bugs.openjdk.java.net/browse/JDK-8120279
+
+ Des workaround moches
+  - http://stackoverflow.com/questions/23284437/javafx-tablecolumn-resize-to-fit-cell-content/38686413#38686413
 
 Soumettre, chercher:
 
@@ -486,6 +517,13 @@ https://bugs.openjdk.java.net/browse/JDK-8134923
 https://bugs.openjdk.java.net/browse/JDK-8156049
 https://community.oracle.com/thread/2544323
 https://javafx-jira.kenai.com/browse/RT-40302
+http://stackoverflow.com/questions/16089304/javafx-imageview-without-any-smoothing
+
+Sample code
+-----
+https://gist.github.com/jewelsea/5415891
+
+
 
 
 code WTF
@@ -513,6 +551,8 @@ SPRING
 ====
 
 http://www.oracle.com/technetwork/articles/java/zonski-1508195.html
+https://github.com/james-d/SpringFXExample
+
 
 
 http://javaetmoi.com/2012/02/core-spring-3-0-certification-mock-exam/
@@ -981,6 +1021,16 @@ Best pratice
 Top questions
 --
  - Passage de paramètres http://stackoverflow.com/questions/14187963/passing-parameters-javafx-fxml
+ - centrer dans une Hbox: ajouter des region ou prefWidth=maxvalue;
+
+Le passage de paramètres
+---------------------
+  1. nestedController : on nomme le controller par le nom de l'inclusion du fxml suffixée par controller! (de la faire des appels de getters setters entre controllers)
+  2. Faire des composants et exposer les getters/setters
+  3. Utiliser getNamespace() dans le FXMLLoader pour setter les variables utilisées dans les expressions
+  4. Instantier Un objet contenant des attributs statique (singleton) 		<fx:define>			<Measurement fx:id="m" />		</fx:define>
+  5. annexe: Utiliser également des méthodes statiques de type VBox.vgrow();
+
 
 TODO component
 ===
@@ -989,3 +1039,25 @@ Easy validation
 DrugPane (i like the name, what to do with it? - a GridPane more easy to use - only CSS no Constraints, rowConstraints and column constraints, with VBox/HBox positionning options, also tilePane options)
 
 Image from low level C component.
+
+ROADMAP jdk9
+====
+Schedule
+
+2016/05/26		Feature Complete
+2016/12/22		Feature Extension Complete
+2017/01/05		Rampdown Start
+2017/02/09		All Tests Run
+2017/02/16		Zero Bug Bounce
+2017/03/16		Rampdown Phase 2
+2017/07/06		Final Release Candidate
+2017/07/27		General Availability
+
+source http://openjdk.java.net/projects/jdk9/
+
+TRENDS
+======
+https://github.com/blog/2047-language-trends-on-github
+http://githut.info/
+https://github.com/statusque/jvmstats/wiki/JVM-Language-Statistics,-June-2016
+
