@@ -1,0 +1,5 @@
+artifact: pdemanget:jlink-example
+include: 
+ - java12
+properties:
+ junit.version: 5.4.1
