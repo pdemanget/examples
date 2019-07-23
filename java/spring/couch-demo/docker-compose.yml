@@ -1,0 +1,14 @@
+version: '3'
+services:
+  dbdoc:
+    image: couchdb
+    ports:
+      - "5986:5986"
+    environment:
+      COUCHDB_USER: admin
+      COUCHDB_PASSWORD: pvsdvnjlfn
+    volumes:
+      - "dbdoc-dev:/var/lib/postgresql/data"
+volumes:
+   dbdoc-dev:
+      driver: local

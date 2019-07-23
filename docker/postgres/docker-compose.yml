@@ -1,0 +1,16 @@
+version: '3'
+services:
+  postgresql:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: cssi
+      POSTGRES_PASSWORD: cssi
+      POSTGRES_DB: cssi
+    volumes:
+      - "postgresql-dev:/var/lib/postgresql/data"
+      - "./docker:/docker-entrypoint-initdb.d"
+volumes:
+  postgresql-dev:
+      driver: local
