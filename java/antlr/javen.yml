@@ -1,0 +1,38 @@
+artifact: antlr-2024:antlr-2024:0.0.1-SNAPSHOT
+description: ''
+name: ''
+properties:
+  javen.include: ''
+  java.mainClass: pdem.intro.Intro
+  project.build.sourceEncoding: UTF-8
+  java.version: '17'
+  maven.compiler.source: '17'
+  maven.compiler.target: '17'
+  maven.compiler.showDeprecation: 'true'
+  maven.compiler.showWarnings: 'true'
+compile:
+- org.antlr:antlr4-runtime:4.7.1
+plugins:
+- groupId: org.apache.maven.plugins
+  artifactId: maven-compiler-plugin
+  version: '3.3'
+  configuration:
+    generatedSourcesDirectory: target/generated-sources/antlr4
+- groupId: org.codehaus.mojo
+  artifactId: build-helper-maven-plugin
+  version: 3.0.0
+  executions:
+    execution:
+      phase: generate-sources
+      goals:
+        goal: add-source
+      configuration:
+        sources:
+          source: target/generated-sources/antlr4
+- groupId: org.antlr
+  artifactId: antlr4-maven-plugin
+  version: 4.7.1
+  executions:
+    execution:
+      goals:
+        goal: antlr4
